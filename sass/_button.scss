@@ -1,0 +1,140 @@
+.button{
+    color: rgb(255 255 255/1);
+    font-weight: 500;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    padding-bottom: 0.625rem;
+    padding-top: 0.625rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    background-color: rgb(26 86 219/1);
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    &:hover {
+        background-color: rgb(30 66 159/1);
+    }
+    &:focus {
+        box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px + 0px) rgb(164 202 254/1), 0 0 #0000;
+    }
+    &.alternative{
+        color: rgb(17 24 39/1);
+        background-color: rgb(255 255 255/1);
+        border:1px solid rgb(229 231 235/1);
+        &:hover {
+            color: rgb(26 86 219/1);
+            background-color: rgb(243 244 246/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(229 231 235/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.dark{
+        background-color: rgb(31 41 55/1);
+        &:hover {
+            background-color: rgb(17 24 39/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(229 231 235/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.light{
+        color: rgb(17 24 39/1);
+        background-color: rgb(255 255 255/1);
+        border:1px solid rgb(229 231 235/1);
+        &:hover {
+            background-color: rgb(243 244 246/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(229 231 235/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.green{
+        background-color: rgb(4 108 78/1);
+        &:hover {
+            background-color: rgb(3 84 63/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(132 225 188/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.red{
+        background-color: rgb(200 30 30/1);
+        &:hover {
+            background-color: rgb(155 28 28/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(248 180 180/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.yellow{
+        background-color: rgb(227 160 8/1);
+        &:hover {
+            background-color: rgb(194 120 3/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) rgb(250 202 21/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &.purple{
+        background-color: rgb(108 43 217/1);
+        &:hover {
+            background-color: rgb(85 33 181/1);
+        }
+        &:focus {
+            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px)  rgb(202 191 253/1) , 0 0 #0000, 0 0 #0000;
+        }
+    }
+    &--outline{
+        background-color: transparent;
+        border: 1px solid rgb(26 86 219/1);
+        color: rgb(26 86 219/1);
+        &:hover {
+            color: rgb(255 255 255/1);
+        }
+        &.dark{
+            background-color: transparent;
+            color: rgb(17 24 39/1);
+            border: 1px solid rgb(31 41 55/1);
+            &:hover {
+                color: rgb(255 255 255/1);
+            }
+        }
+        &.green{
+            background-color: transparent;
+            color: rgb(4 108 78/1);
+            border: 1px solid rgb(4 108 78/1);
+            &:hover {
+                color: rgb(255 255 255/1);
+            }
+        }
+        &.red{
+            background-color: transparent;
+            color: rgb(200 30 30/1);
+            border: 1px solid rgb(200 30 30/1);
+            &:hover {
+                color: rgb(255 255 255/1);
+            }
+        }
+        &.yellow{
+            background-color: transparent;
+            color: rgb(227 160 8/1);
+            border: 1px solid rgb(227 160 8/1);
+            &:hover {
+                color: rgb(255 255 255/1);
+            }
+        }
+        &.purple{
+            background-color: transparent;
+            color: rgb(108 43 217/1);
+            border: 1px solid rgb(108 43 217/1);
+            &:hover {
+                color: rgb(255 255 255/1);
+            }
+        }
+    }
+}
+
+.component__outline{
+    
+}

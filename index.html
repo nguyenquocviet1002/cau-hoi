@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://huudinh.github.io/assets/sass/lib.min.css">
-    <style>
-        .choice{
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="sass/style.css">
 </head>
 <body>
-    <button id="btn-start">Start</button>
+    <div class="container">
+        <div class="quiz">
+            <h3 class="quiz__title">Câu hỏi trắc nghiệm</h3>
+            <p>Hãy thử sức với một số câu hỏi sau đây nhé</p>
+            <button type="button" class="button quiz__start" id="btn-start" onclick="restartQuestion()">Bắt đầu</button>
+            <div class="quiz__boxPopup" id="box-popup"></div>
+        </div>
+    </div>
     
     <script src="js/script.js"></script>
 </body>

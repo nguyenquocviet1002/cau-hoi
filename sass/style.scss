@@ -1,0 +1,115 @@
+@import 'button';
+.quiz{
+    background-color: #eaeef1;
+    border-radius: 4px;
+    box-shadow: 0px 0px 5px 2px #ebecef;
+    padding: 15px;
+    margin: 10px 0;
+    .button{
+        font-size: 1rem;
+    }
+    &__title{
+        margin-bottom: 10px;
+        margin-top: 0;
+        font-weight: 500;
+    }
+    .modal{
+        align-items: flex-start;
+        padding: 100px 0 50px;
+    }
+    .modal-box{
+        min-width: 450px;
+    }
+    .modal-body{
+        border-radius: 4px;
+        font-size: 17px;
+    }
+    .modal-close{
+        position: absolute;
+        top: 0px;
+        right: 5px;
+    }
+    &__headQuestion{
+        font-weight: 600;
+    }
+    &__answer{
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: 10px;
+        &Item{
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            width: 100%;
+            display: block;
+            background: #f3f3f3;
+            border: 1px solid #e5e5e5;
+            padding: 9px 15px 9px 50px;
+            position: relative;
+            &::before{
+                content: '';
+                width: 25px;
+                height: 25px;
+                background-image: url('../images/icon-checkbox.png');
+                background-repeat: no-repeat;
+                background-size: 440%;
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 0 2px 0px #999;
+            }
+            &.active{
+                background-color: #1a56db;
+                color: #fff;
+                &::before{
+                    background-position: 34% 0;
+                }
+            }
+            &.correct{
+                background-color: #068f06;
+                color: #fff;
+                &::before{
+                    background-position: 66% 0;
+                }
+            }
+            &.incorrect{
+                background-color: #c81e1e;
+                color: #fff;
+                &::before{
+                    background-position: 100% 0;
+                }
+            }
+        }
+    }
+    &__questionItem{
+        margin-bottom: 20px;
+        &:not(:last-child){
+            border-bottom: 1px solid #000;
+        }
+    }
+    .modal__confirm{
+        .modal-box{
+            min-width: 300px;
+        }
+        .modal-body{
+            text-align: center;
+        }
+    }
+    .modal__result{
+        .quiz__answerItem{
+            cursor: auto;
+        }
+    }
+    .disable{
+        pointer-events: none;
+        display: none;
+    }
+    @media (max-width: 500px){
+        .modal-box{
+            min-width: 95%;
+        }
+    }
+}
