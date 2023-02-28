@@ -117,7 +117,11 @@ const showResult = (reload) => {
             }">${data[i].answer[j]}</li>
         `;
       result =
-        dataSuccessQuestionFinal[i].answer == data[i].correct ? "Đúng" : "Sai";
+              `
+              <div><strong>Đáp án bạn chọn: ${dataSuccessQuestionFinal[i].answer}</strong></div>
+              <div>Đáp án đúng: ${data[i].correct}</div>
+              <div>Kết quả: <strong>${dataSuccessQuestionFinal[i].answer == data[i].correct ? "Đúng" : "Sai"}</strong></div>
+              `
     }
     questionFinal += `
       <div class="quiz__questionItem">
