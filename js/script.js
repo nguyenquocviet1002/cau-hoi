@@ -1,23 +1,27 @@
-const data = [
-  {
-    question: "Một cộng một bằng mấy",
-    answer: ["Một", "Hai", "Ba", "Bốn"],
-    correct: "Hai",
-  },
-  {
-    question: "Hai cộng hai bằng mấy",
-    answer: ["Một", "Hai", "Ba", "Bốn"],
-    correct: "Bốn",
-  },
-  {
-    question: "Bốn trừ một bằng mấy",
-    answer: ["Một", "Hai", "Ba", "Bốn"],
-    correct: "Ba",
-  },
-];
+const getExam = async (idExam) => {
+  const res = await fetch(`https://app.scigroupvn.com/servey/servey-backend/public/api/get-question?examId=${idExam}`);
+  const data = res.json();
+  return data;
+}
+
+const createCustomer = async (body) => {
+  const res = await fetch(`http://app.scigroupvn.com/servey/servey-backend/public/api/create-customer`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = res.json();
+  return data;
+}
+
+const idExam = 1;
+let dataExam = [];
+let data = [];
 
 const dataSuccessQuestion = [];
 const dataSuccessQuestionFinal = [];
+const dataSuccessQuestionPost = [];
+const dataSuccessQuestionFinalPost = [];
 let index = -1;
 
 const renderQuestion = () => {
@@ -35,15 +39,12 @@ const renderQuestion = () => {
                 <div class="modal-body">
                     <div class="modal-close" id="close-question">&times;</div>
                     <div>
+                        <input class="quiz__id" type="hidden" value="${data[index].id}" />
                         <p>Câu: ${index + 1}/${data.length}</p>
-                        <p class="quiz__headQuestion">${
-                          data[index].question
-                        }</p>
+                        <p class="quiz__headQuestion">${data[index].question}</p>
                         <ol class="quiz__answer">${answerItem}<ol>
                     </div>
-                    <button type="button" class="button disable" id="next-question" onclick="renderQuestion()">${
-                      index == data.length - 1 ? "Xem kết quả" : "Tiếp tục"
-                    }</button>
+                    <button type="button" class="button disable" id="next-question" onclick="renderQuestion()">${index == data.length - 1 ? "Xem kết quả" : "Tiếp tục"}</button>
                 </div>
             </div>
         </div>
@@ -52,12 +53,15 @@ const renderQuestion = () => {
   }
   activeAnswer();
   let lastItem = dataSuccessQuestion[dataSuccessQuestion.length - 1];
+  let lastItemPost = dataSuccessQuestionPost[dataSuccessQuestionPost.length - 1];
   dataSuccessQuestionFinal.push(lastItem);
+  dataSuccessQuestionFinalPost.push(lastItemPost);
   if (index == data.length) {
     showResult();
   }
   dataSuccessQuestion.length = 0;
-  if(document.getElementById("close-question")){
+  dataSuccessQuestionPost.length = 0;
+  if (document.getElementById("close-question")) {
     document.getElementById("close-question").addEventListener("click", () => {
       confirmClose();
     });
@@ -76,25 +80,39 @@ const activeAnswer = () => {
         document.getElementsByClassName("active")[0].innerHTML;
       const question =
         document.getElementsByClassName("quiz__headQuestion")[0].innerHTML;
+        const questionID =
+        document.getElementsByClassName("quiz__id")[0].value;
       if (answerChoice.length !== 0) {
         document.getElementById("next-question").classList.remove("disable");
       }
-      storageAnswer(question, answerChoice);
+      storageAnswer(question, answerChoice, questionID);
     });
   }
 };
 
-const storageAnswer = (question, answer) => {
+const storageAnswer = (question, answer, questionID) => {
   const successQuestion = {
     question: question,
     answer: answer,
   };
+  const successQuestionPost = {
+    answer: answer,
+    question_id: questionID,
+    exam_id: idExam
+  };
   dataSuccessQuestion.push(successQuestion);
+  dataSuccessQuestionPost.push(successQuestionPost);
 };
 
-const showResult = (reload) => {
+const showResult = async (reload) => {
   if (reload == undefined) {
     dataSuccessQuestionFinal.shift();
+    dataSuccessQuestionFinalPost.shift();
+    try{
+      await createCustomer(dataSuccessQuestionFinalPost);
+    } catch (e){
+      console.log(e)
+    }
   }
   let questionFinal = "";
   let answerFinal = "";
@@ -104,23 +122,22 @@ const showResult = (reload) => {
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].answer.length; j++) {
       answerFinal += `
-            <li class="quiz__answerItem ${
-              dataSuccessQuestionFinal[i].answer == data[i].correct &&
-              dataSuccessQuestionFinal[i].answer == data[i].answer[j]
-                ? "correct "
-                : dataSuccessQuestionFinal[i].answer !== data[i].correct &&
-                  dataSuccessQuestionFinal[i].answer === data[i].answer[j]
-                ? "incorrect "
-                : data[i].correct == data[i].answer[j]
-                ? "correct"
-                : ""
-            }">${data[i].answer[j]}</li>
+            <li class="quiz__answerItem ${dataSuccessQuestionFinal[i].answer == data[i].correct_answer &&
+          dataSuccessQuestionFinal[i].answer == data[i].answer[j]
+          ? "correct "
+          : dataSuccessQuestionFinal[i].answer !== data[i].correct_answer &&
+            dataSuccessQuestionFinal[i].answer === data[i].answer[j]
+            ? "incorrect "
+            : data[i].correct_answer == data[i].answer[j]
+              ? "correct"
+              : ""
+        }">${data[i].answer[j]}</li>
         `;
       result =
-              `
+        `
               <div><strong>Đáp án bạn chọn: ${dataSuccessQuestionFinal[i].answer}</strong></div>
-              <div>Đáp án đúng: ${data[i].correct}</div>
-              <div>Kết quả: <strong>${dataSuccessQuestionFinal[i].answer == data[i].correct ? "Đúng" : "Sai"}</strong></div>
+              <div>Đáp án đúng: ${data[i].correct_answer}</div>
+              <div>Kết quả: <strong>${dataSuccessQuestionFinal[i].answer == data[i].correct_answer ? "Đúng" : "Sai"}</strong></div>
               `
     }
     questionFinal += `
@@ -165,10 +182,12 @@ const restartQuestion = () => {
   index = -1;
   dataSuccessQuestion.length = 0;
   dataSuccessQuestionFinal.length = 0;
-  if(document.getElementsByClassName("quiz__again")[0]){
+  dataSuccessQuestionPost.length = 0;
+  dataSuccessQuestionFinalPost.length = 0;
+  if (document.getElementsByClassName("quiz__again")[0]) {
     document.getElementsByClassName("quiz__again")[0].remove();
   }
-  if(!document.getElementById("btn-start")){
+  if (!document.getElementById("btn-start")) {
     document
       .getElementsByClassName("quiz")[0]
       .insertAdjacentHTML("beforeend", btnStart);
@@ -219,3 +238,13 @@ const confirmCloseOutSide = () => {
 };
 
 confirmCloseOutSide();
+
+window.onload = async () => {
+  try{
+    const dataLoad = await getExam(idExam);
+    dataExam = dataLoad.data;
+    data = dataExam.question;
+  } catch (e){
+    console.log(e);
+  }
+}
