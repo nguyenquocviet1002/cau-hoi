@@ -14,7 +14,7 @@ const createCustomer = async (body) => {
   return data;
 }
 
-const idExam = 1;
+const idExam = 3;
 let dataExam = [];
 let data = [];
 
@@ -30,7 +30,7 @@ const renderQuestion = () => {
   index += 1;
   if (index < data.length) {
     data[index].answer.map((item) => {
-      answerItem += `<li class="quiz__answerItem">${item}</li>`;
+      answerItem += `<li class="quiz__answerItem">${item.answer}</li>`;
     });
     questionItem = `
         <div class="modal" id="modal-question" style="display: flex">
@@ -123,15 +123,15 @@ const showResult = async (reload) => {
     for (let j = 0; j < data[i].answer.length; j++) {
       answerFinal += `
             <li class="quiz__answerItem ${dataSuccessQuestionFinal[i].answer == data[i].correct_answer &&
-          dataSuccessQuestionFinal[i].answer == data[i].answer[j]
+          dataSuccessQuestionFinal[i].answer == data[i].answer[j].answer
           ? "correct "
           : dataSuccessQuestionFinal[i].answer !== data[i].correct_answer &&
-            dataSuccessQuestionFinal[i].answer === data[i].answer[j]
+            dataSuccessQuestionFinal[i].answer === data[i].answer[j].answer
             ? "incorrect "
-            : data[i].correct_answer == data[i].answer[j]
+            : data[i].correct_answer == data[i].answer[j].answer
               ? "correct"
               : ""
-        }">${data[i].answer[j]}</li>
+        }">${data[i].answer[j].answer}</li>
         `;
       result =
         `
