@@ -26,8 +26,8 @@
     }
     .modal-close{
         position: absolute;
-        top: 0px;
-        right: 5px;
+        top: 5px;
+        right: 10px;
     }
     &__headQuestion{
         font-weight: 600;
@@ -106,6 +106,29 @@
     .disable{
         pointer-events: none;
         display: none;
+    }
+    .count__correct{
+        font-size: 18px;
+        padding-top: 5px;
+    }
+    .box__color{
+        margin-bottom: 10px;
+        p{
+            margin: 0;
+            font-size: 15px;
+        }
+    }
+    .color{
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        background-color: #fff;
+        &--green{
+            background-color: #068f06;
+        }
+        &--red{
+            background-color: #c81e1e;
+        }
     }
     @media (max-width: 500px){
         .modal-box{

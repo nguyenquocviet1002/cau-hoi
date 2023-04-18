@@ -14,7 +14,7 @@ const createCustomer = async (body) => {
   return data;
 }
 
-const idExam = 3;
+const idExam = 6;
 let dataExam = [];
 let data = [];
 
@@ -30,7 +30,7 @@ const renderQuestion = () => {
   index += 1;
   if (index < data.length) {
     data[index].answer.map((item) => {
-      answerItem += `<li class="quiz__answerItem">${item.answer}</li>`;
+      answerItem += `<li class="quiz__answerItem">${String(item.answer)}</li>`;
     });
     questionItem = `
         <div class="modal" id="modal-question" style="display: flex">
@@ -118,6 +118,7 @@ const showResult = async (reload) => {
   let answerFinal = "";
   let result = "";
   let body = "";
+  let inline = [];
   let btnShowResult = `<button type="button" class="button quiz__start quiz__again" onclick="showResult(true)">Xem kết quả</button>`;
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].answer.length; j++) {
@@ -135,10 +136,11 @@ const showResult = async (reload) => {
         `;
       result =
         `
-              <div><strong>Đáp án bạn chọn: ${dataSuccessQuestionFinal[i].answer}</strong></div>
-              <div>Đáp án đúng: ${data[i].correct_answer}</div>
-              <div>Kết quả: <strong>${dataSuccessQuestionFinal[i].answer == data[i].correct_answer ? "Đúng" : "Sai"}</strong></div>
-              `
+          <div><strong>Đáp án bạn chọn: ${dataSuccessQuestionFinal[i].answer}</strong></div>
+          <div>Đáp án đúng: ${data[i].correct_answer}</div>
+          <div>Giải thích: ${data[i].explain}</div>
+          <div>Kết quả: <strong>${dataSuccessQuestionFinal[i].answer == data[i].correct_answer ? "Đúng" : "Sai"}</strong></div>
+        `
     }
     questionFinal += `
       <div class="quiz__questionItem">
@@ -149,6 +151,9 @@ const showResult = async (reload) => {
     `;
     answerFinal = "";
     result = "";
+    if(dataSuccessQuestionFinal[i].answer == data[i].correct_answer){
+      inline.push(dataSuccessQuestionFinal[i].answer);
+    }
   }
   body = `
         <div class="modal modal__result" id="modal-result" style="display: flex">
@@ -156,6 +161,11 @@ const showResult = async (reload) => {
             <div class="modal-box animate-pop">
                 <div class="modal-body">
                     <div class="modal-close" id="close-result">&times;</div>
+                    <div class="count__correct">Chúc mừng bạn đã hoàn thành trắc nghiệm với tỉ lệ ${inline.length}/${data.length}</div>
+                    <div class="box__color">
+                      <p>Màu <span class="color color--green"></span> là đáp án trả lời <strong>Đúng</strong> của câu hỏi.</p>
+                      <p>Màu <span class="color color--red"></span> là đáp án trả lời <strong>Sai</strong> của câu hỏi.</p>
+                    </div>
                     <div>${questionFinal}</div>
                     <button type="button" class="button" onclick="restartQuestion()">Làm lại</button>
                 </div>
@@ -195,7 +205,7 @@ const restartQuestion = () => {
   renderQuestion();
 };
 
-const confirmClose = () => {
+const confirmClose = async () => {
   let htmlConfirm = `
         <div class="modal modal__confirm" id="modal-confirm" style="display: flex">
           <div class="modal-bg"></div>
@@ -213,9 +223,25 @@ const confirmClose = () => {
     .insertAdjacentHTML("beforeend", htmlConfirm);
   const btnConfirm = document.getElementsByClassName("confirm__btn");
   for (let i = 0; i < btnConfirm.length; i++) {
-    btnConfirm[i].addEventListener("click", () => {
+    btnConfirm[i].addEventListener("click", async () => {
       const dataId = btnConfirm[i].getAttribute("data-id");
       if (dataId === "yes") {
+        dataSuccessQuestionFinalPost.shift();
+        let lengthFinalPost = dataSuccessQuestionFinalPost.length;
+        let lengthExam = dataExam.question.length;
+        for (lengthFinalPost; lengthFinalPost < lengthExam; lengthFinalPost++){
+          const dataExamNull = {
+            answer: '',
+            question_id: dataExam.question[lengthFinalPost].id,
+            exam_id: dataExam.examId
+          }
+          dataSuccessQuestionFinalPost.push(dataExamNull);
+        }
+        try{
+          await createCustomer(dataSuccessQuestionFinalPost);
+        } catch (e){
+          console.log(e)
+        }
         document.getElementById("modal-confirm").remove();
         document.getElementById("modal-question").remove();
       }
